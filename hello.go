@@ -48,12 +48,44 @@ func evenGenerator() func() uint {
 
 // как проверить, существуют ли numbers[0] и numbers[1]
 func sum(numbers []rune) (s rune) {
-	defer func() {
-		str := recover()
-		fmt.Println(str)
-	}()
+	if len(numbers) != 2 {
+		return 0
+	}
 	s = numbers[0] + numbers[1]
 	return
+}
+
+func isQuotientEven(num int) (int, bool) {
+	var q int = num / 2
+	return q, q%2 == 0
+}
+
+// по-хорошему здесь должна быть проверка на не пустой список аргументов
+func max(numbers ...int) int {
+	var m int = numbers[0]
+	for _, num := range numbers {
+		if num > m {
+			m = num
+		}
+	}
+	return m
+}
+
+func makeOddGenerator() func() uint {
+	cur := uint(1)
+	return func() uint {
+		prev := cur
+		cur += 2
+		return prev
+	}
+}
+
+func fib(num uint) uint {
+	if num == 0 || num == 1 {
+		return num
+	}
+
+	return fib(num-1) + fib(num-2)
 }
 
 func main() {
@@ -92,12 +124,25 @@ func main() {
 	fmt.Println(countTotal(slice...))
 
 	nextEven := evenGenerator()
-	fmt.Println(nextEven())
-	fmt.Println(nextEven())
-	fmt.Println(nextEven())
+	fmt.Println("even", nextEven())
+	fmt.Println("even", nextEven())
+	fmt.Println("even", nextEven())
+
+	nextOdd := makeOddGenerator()
+	fmt.Println("odd", nextOdd())
+	fmt.Println("odd", nextOdd())
+	fmt.Println("odd", nextOdd())
 
 	fmt.Println(sum([]rune{1, 2}))
 
+	num, ok := isQuotientEven(2)
+	fmt.Println("isQuotientEven1", num, ok)
+	num, ok = isQuotientEven(5)
+	fmt.Println("isQuotientEven2", num, ok)
+
+	fmt.Println("max", max(1, 3, 5, 4, 2))
+
+	fmt.Println("fib", fib(6))
 	// second выполнится после того, как завершится текущая функция
 	defer second()
 	first()
