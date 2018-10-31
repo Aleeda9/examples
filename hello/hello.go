@@ -88,6 +88,12 @@ func fib(num uint) uint {
 	return fib(num-1) + fib(num-2)
 }
 
+func swap(x *int, y *int) {
+	z := *x
+	*x = *y
+	*y = z
+}
+
 func main() {
 	weekDays := map[string]string{
 		"mo": "Monday",
@@ -143,6 +149,11 @@ func main() {
 	fmt.Println("max", max(1, 3, 5, 4, 2))
 
 	fmt.Println("fib", fib(6))
+
+	a, b := 1, 2
+	swap(&a, &b)
+	fmt.Println("swap", a, b)
+	
 	// second выполнится после того, как завершится текущая функция
 	defer second()
 	first()
