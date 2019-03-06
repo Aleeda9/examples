@@ -39,11 +39,11 @@
         </script>
         <!-- v-for directive for items -->
         <div id="app4">
-            <ol>
+            <ul>
                 <li v-for="item in items" >
                     {{item.text}}
                 </li>
-            </ol>
+            </ul>
         </div>
         <script>
             var app4 = new Vue({
@@ -85,6 +85,33 @@
                 el: "#app6",
                 data: {
                     message: "New message"
+                }
+            });
+        </script>
+        <!-- new vue component -->
+        <div id="app7">
+            <ul>
+                <task-item
+                    v-for="item in items"
+                    v-bind:key="item.id"
+                    v-bind:text="item.text"
+                ></task-item>
+            </ul>
+        </div>
+        <script>
+            Vue.component("task-item", {
+                props: ["text"],
+                template: "<li> {{ text }} </li>"
+            });
+
+            var app7 = new Vue({
+                el: "#app7",
+                data: {
+                    items:[
+                        {id: 1, text: "Task 1"},
+                        {id: 2, text: "Task 2"},
+                        {id: 3, text: "Task 3"}
+                    ]
                 }
             });
         </script>
