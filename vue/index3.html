@@ -56,5 +56,25 @@
                 }
             });
         </script>
+        <div id="div3">
+            <ul>
+                <li v-for="n in getEven(numbers)"> {{ n }}</li>
+            </ul>
+        </div>
+        <script>
+            var evenVm = new Vue({
+                el: "#div3",
+                data: {
+                    numbers: [1, 2, 3, 4, 5]
+                },
+                methods: {
+                    getEven: function(numbers){
+                        return numbers.filter(function(n){
+                            return n % 2 == 0
+                        });
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
