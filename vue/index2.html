@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+    <head>
+        <title>Vue Index 2!</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    </head>
+    <body>
+        <div id="example1">
+            <p> {{ text }} </p>
+            <input v-model="text">
+            <br>
+            <p v-bind:id="dynId">Директива v-html: <span v-html="rawHtml"></span></p>
+            <p>Было: {{ message }} </p>
+            <p>Стало: {{ reversedMessage }} </p>
+            <br>
+            <p>Задайте любой вопрос:</p>
+            <input v-model="question">
+            <p>Ответ: {{ answer }} </p>
+        </div>
+        <script>
+            var data = { text: "type here",
+                         rawHtml: '<span style="color:red;">Этот текст должен быть красным</span>',
+                         dynId: "vHtmlDirective",
+                         message: "Hello!",
+                         question: "",
+                         answer: "Задайте вопрос" };
+
+            var vm = new Vue({
+                el: '#example1',
+                data: data,
+                created: function(){
+                    console.log("component was created");
+                },
+                computed: {
+                    reversedMessage: function(){
+                        return this.message.split("").reverse().join("");
+                    }
+                },
+                watch: {
+                    question: function(newValue, oldValue){
+                        this.answer = "...";
+                        this.debouncedAnswer();
+                    }
+                },
+                created: function(){
+                    this.debouncedAnswer = _.debounce(this.getAnswer, 500);
+                },
+                methods:{
+                    getAnswer: function(){
+                        console.log("answer called");
+                        if(this.question.indexOf("?") === -1) {
+                            this.answer = "Нужен ? в конце вопроса";
+                            return;
+                        }
+
+                        this.answer = "Думаю...";
+                        axios.get("https://yesno.wtf/api")
+                            .then(function(response){
+                                vm.answer = _.capitalize(response.data.answer);
+                            })
+                            .catch(function(err){
+                                vm.answer = "Ошибка: " + error;
+                            })
+                    }
+                }
+            });
+
+            vm.$watch("text", function(newValue, oldValue){
+                console.log("cb called");
+            });
+        </script>
+    </body>
+</html>
