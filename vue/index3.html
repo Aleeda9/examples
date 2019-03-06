@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+    <head>
+        <title>Vue Index 3</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <!-- block for hide/show element within template tag -->
+        <div id="div1">
+            <button @click="onHideShowBtnClick"> {{ hideShowBtnText }} </button>
+            <template v-if="showElements">
+                <p>Этот текст можно скрыть, а можно показать</p>
+            </template>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: "#div1",
+                data: {
+                    showElements: true
+                },
+                methods: {
+                    onHideShowBtnClick: function(){
+                        this.showElements = !this.showElements;
+                    }
+                },
+                computed: {
+                    hideShowBtnText: function(){
+                        return this.showElements ? "Скрыть" : "Показать";
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
