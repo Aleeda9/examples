@@ -30,5 +30,31 @@
                 }
             });
         </script>
+        <!-- v-for by properties of object from state -->
+        <div id="div2">
+            <ul :type="type">
+                <li v-for="(value, key, index) in demoObject"> {{ index }}. {{ key }}: {{ value }} </li>
+            </ul>
+            <button @click="onChangeBtnClick">Change Li type</button>
+        </div>
+        <script>
+            var forVM = new Vue({
+                el: "#div2",
+                data: {
+                    demoObject: {
+                        firstName: "Alex",
+                        lastName: "Barakova",
+                        age: 28
+                    },
+                    type: "circle"
+                },
+                methods: {
+                    onChangeBtnClick: function(){
+                        this.type = this.type == "circle" ? "square" : "circle";
+                        return this.type;
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
