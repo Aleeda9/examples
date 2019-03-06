@@ -1,0 +1,92 @@
+<!DOCTYPE html> 
+    <head>
+        <title>Vue Examples</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <!-- very first vue example, just message -->
+        <div id="app"> {{ message }} </div>
+        <script>
+            var app = new Vue ( {
+                el: "#app",
+                data: { message: "Hello, World!" }
+            });
+        </script>
+        <!-- binded title of span-element -->
+        <div id="app2">
+            <span v-bind:title="message">Наведи на меня</span>
+        </div>
+        <script>
+            var app2 = new Vue({
+                el: "#app2",
+                data: {
+                    message: "Подсказка"
+                }
+            });
+        </script>
+        <!-- visibility of the span-element -->
+        <div id="app3">
+            <span v-if="visible">Now I'm visible</span>
+        </div>
+        <script>
+            var app3 = new Vue({
+                el: "#app3",
+                data: {
+                    visible: true
+                }
+            });
+        </script>
+        <!-- v-for directive for items -->
+        <div id="app4">
+            <ol>
+                <li v-for="item in items" >
+                    {{item.text}}
+                </li>
+            </ol>
+        </div>
+        <script>
+            var app4 = new Vue({
+                el: "#app4",
+                data: {
+                    items: [
+                        {text: "First item"},
+                        {text: "Second item"},
+                        {text: "Third item"}
+                    ]
+                }
+            });
+        </script>
+        <!-- onClick -->
+        <div id="app5">
+            <span> {{ message }} </span>
+            <button v-on:click="reverseMessage">Click Me!</button>
+        </div>
+        <script>
+            var app5 = new Vue({
+                el: "#app5",
+                data: {
+                    message: "This is a message"
+                },
+                methods: {
+                    reverseMessage: function() {
+                        this.message = this.message.split(" ").reverse().join(" ");
+                    }
+                }
+            });
+        </script>
+        <!-- binding of application state with form element -->
+        <div id="app6">
+            <p> {{ message }} </p>
+            <input v-model="message">
+        </div>
+        <script>
+            var app6 = new Vue({
+                el: "#app6",
+                data: {
+                    message: "New message"
+                }
+            });
+        </script>
+    </body>
+</html>
