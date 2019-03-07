@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+    <head>
+        <title>Vue Index 4</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <!-- block for hide/show element within template tag -->
+        <div id="div1">
+            <input type="checkbox" value="Саша" v-model="checkedNames">
+            <label>Саша</label>
+            <input type="checkbox" value="Миша" v-model="checkedNames">
+            <label>Саша</label>
+            <input type="checkbox" value="Вася" v-model="checkedNames">
+            <label>Саша</label>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: "#div1",
+                data: {
+                    checkedNames: []
+                }
+            });
+        </script>
+    </body>
+</html>
