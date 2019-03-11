@@ -8,17 +8,63 @@
         <!-- block for hide/show element within template tag -->
         <div id="div1">
             <input type="checkbox" value="Саша" v-model="checkedNames">
-            <label>Саша</label>
+            <label>Саша</label><br>
             <input type="checkbox" value="Миша" v-model="checkedNames">
-            <label>Саша</label>
+            <label>Миша</label><br>
             <input type="checkbox" value="Вася" v-model="checkedNames">
-            <label>Саша</label>
+            <label>Вася</label>
+            <br><br>
+            <input type="radio" value="Один" v-model="picked">
+            <label>Один</label><br>
+            <input type="radio" value="Два" v-model="picked">
+            <label>Два</label>
+            <br><br>
+            <select v-model="selected">
+                <option v-for="option in options" :value="option.value"> {{ option.text }} </option>
+            </select>
+            <br>
+            <input type="checkbox" v-model="checked" true-value="yes" false-value="no">
+            <label> {{ checked }} </label>
+            <br>
+            <select v-model="selection">
+                <option disabled value="">disabled</option>
+                <option v-bind:value="{number: 123}">123</option>
+            </select>
+            <br>
+            <input type="number" v-model.number="num">
         </div>
         <script>
             var vm = new Vue({
                 el: "#div1",
                 data: {
-                    checkedNames: []
+                    checkedNames: [],
+                    picked: "Один",
+                    selected: 1,
+                    options: [
+                        {text: "One", value: 1},
+                        {text: "Two", value: 2},
+                        {text: "Three", value: 3}
+                    ],
+                    checked: "yes",
+                    selection: "",
+                    num: 0
+                },
+                watch: {
+                    checkedNames: function(newValue, oldValue) {
+                        console.log("checkedNames", newValue, oldValue);
+                    },
+                    picked: function(newValue, oldValue) {
+                        console.log("picked", newValue, oldValue);
+                    },
+                    selected: function(newValue, oldValue) {
+                        console.log("selected", newValue, oldValue);
+                    },
+                    selection: function(newValue) {
+                        console.log("selection", typeof newValue);
+                    },
+                    num: function(newValue) {
+                        console.log("num", newValue, typeof newValue);
+                    }
                 }
             });
         </script>
