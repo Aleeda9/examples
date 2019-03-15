@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+    <head>
+        <title>Vue Index 5</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <script>
+            // example component with data function
+            Vue.component('button-counter', {
+                template: '<button v-on:click="count++">Counter - {{ count }} </button>',
+                data: function() {
+                    return {
+                        count: 0
+                    }
+                }
+            });
+
+            // Vue.component('blog-post', {
+            //     template: '<div><h2> {{ title }} </h2><div v-html="content"></div></div>',
+            //     props: ["title", "content"]
+            // });
+
+            // the same but in one props object
+            Vue.component('blog-post', {
+                template: '<div><h2> {{ post.title }} </h2><div v-html="post.content"></div></div>',
+                props: ["post"]
+            });
+        </script>
+        <div id="main-div">
+            <blog-post
+                v-for="post in posts"
+                v-bind:key="post.id"
+                v-bind:post="post"
+            >
+            </blog-post>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: "#main-div",
+                data: {
+                    posts: [
+                        {id: 0, title: "First Post", content: '<p style="color:red;">post content</p>'},
+                        {id: 1, title: "Second Post", content: '<p>post content</p>'},
+                        {id: 2, title: "Third Post", content: 'post content'}
+                    ]
+                }
+            });      
+        </script>
+    </body>
+</html>
