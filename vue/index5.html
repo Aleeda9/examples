@@ -23,19 +23,82 @@
 
             // the same but in one props object
             Vue.component('blog-post', {
-                template: '<div><h2> {{ post.title }} </h2><div v-html="post.content"></div></div>',
+                template: `<div>
+                              <h2> {{ post.title }} </h2>
+                              <button v-on:click="$emit('increase-text-size', 0.1)">Increase Text!</button>
+                              <div v-html="post.content"></div>
+                           </div>`,
                 props: ["post"]
+            });
+
+            Vue.component('custom-input', {
+                template: `<input
+                               v-bind:value="value"
+                               v-on:input="$emit('input', $event.target.value)"
+                           >`,
+                props: ["value"]
+            });
+
+            Vue.component('alert-box', {
+                template: `<div>
+                               <strong>Error</strong>
+                               <slot></slot>
+                           </div>`
             });
         </script>
         <div id="main-div">
-            <blog-post
-                v-for="post in posts"
-                v-bind:key="post.id"
-                v-bind:post="post"
+            <div v-bind:style="{'font-size': postFontSize + 'em'}">
+                <blog-post
+                    v-for="post in posts"
+                    v-bind:key="post.id"
+                    v-bind:post="post"
+                    v-on:increase-text-size='postFontSize += $event'
+                >
+                </blog-post>
+            </div>
+
+            <custom-input
+                v-model="inputText"
             >
-            </blog-post>
+            </custom-input>
+
+            <alert-box> Something bad happened! </alert-box>
+
+            <div>
+                <button
+                    v-for="tab in tabs"
+                    v-bind:key="tab.id"
+                    v-on:click="currentTab = tab"
+                > {{ tab.name }} </button>
+
+                <component v-bind:is="currentTab.component"></component>
+            </div>
         </div>
         <script>
+            var tabs = [
+                {
+                    id: 1,
+                    name: 'Tab1',
+                    component: {
+                        template: '<div>Tab1</div>'
+                    }
+                },
+                {
+                    id: 2,
+                    name: 'Tab2',
+                    component: {
+                        template: '<div>Tab2</div>'
+                    }
+                },
+                {
+                    id: 3,
+                    name: 'Tab3',
+                    component: {
+                        template: '<div>Tab3</div>'
+                    }
+                }
+            ];
+
             var vm = new Vue({
                 el: "#main-div",
                 data: {
@@ -43,7 +106,22 @@
                         {id: 0, title: "First Post", content: '<p style="color:red;">post content</p>'},
                         {id: 1, title: "Second Post", content: '<p>post content</p>'},
                         {id: 2, title: "Third Post", content: 'post content'}
-                    ]
+                    ],
+                    postFontSize: 1,
+                    inputText: "",
+                    tabs: tabs,
+                    currentTab: tabs[0]
+                },
+                methods: {
+                    // the same as postFontSize += $event but in a method
+                    onIncreaseTextSize: function(increaseSize) {
+                        this.postFontSize += increaseSize;
+                    }
+                },
+                watch: {
+                    inputText: function(value) {
+                        console.log("inputText", value);
+                    }
                 }
             });      
         </script>
