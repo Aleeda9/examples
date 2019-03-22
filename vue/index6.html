@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <head>
+        <title>Vue Index 6</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <script>
+            Vue.component("checkbox-component", {
+                template: `<input
+                             type="checkbox"
+                             v-bind:checked="checked"
+                             v-on:change="$emit('change', $event.target.checked)"
+                           >`,
+                model: {
+                    prop: 'checked',
+                    event: 'change'
+                },
+                props: {
+                    checked: Boolean
+                }
+            });
+        </script>
+        <div id="maindiv">
+            <checkbox-component
+                v-model="check"
+            >
+            </checkbox-component>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: "#maindiv",
+                data: {
+                    check: true
+                }
+            });
+        </script>
+    </body>
+</html>
