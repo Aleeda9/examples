@@ -8,9 +8,9 @@
         <script>
             Vue.component("checkbox-component", {
                 template: `<input
-                             type="checkbox"
-                             v-bind:checked="checked"
-                             v-on:change="$emit('change', $event.target.checked)"
+                            type="checkbox"
+                            v-bind:checked="checked"
+                            v-on:change="$emit('change', $event.target.checked)"
                            >`,
                 model: {
                     prop: 'checked',
@@ -20,18 +20,62 @@
                     checked: Boolean
                 }
             });
+
+            Vue.component('custom-input', {
+                // forbid inherit attrs on the root element,
+                // but pass it to child element by using v-bind="$attrs"
+                inheritAttrs: false,
+                template: `<label>
+                            <input
+                              v-bind:value="value"
+                              v-bind="$attrs"
+                              v-on="inputListeners"
+                            >
+                           </label>`,
+                props: ['value'],
+                computed: {
+                    inputListeners: function() {
+                        var listeners = this.$listeners;
+                        var vm = this;
+                        return {
+                            ...listeners,
+                            input: function(event) {
+                                vm.$emit('input', event.target.value);
+                            }
+                        };
+                    }
+                }
+            });
         </script>
         <div id="maindiv">
             <checkbox-component
                 v-model="check"
             >
             </checkbox-component>
+            </br>
+            <custom-input
+                v-model="inputValue"
+                v-on:focus="onFocus"
+                id="input-id"
+            >                
+            </custom-input>
         </div>
         <script>
             var vm = new Vue({
                 el: "#maindiv",
                 data: {
-                    check: true
+                    check: true,
+                    inputValue: ""
+                },
+                watch: {
+                    inputValue: function(value) {
+                        console.log("inputValue",value);
+                    }
+                },
+                methods: {
+                    onFocus: function(event) {
+                        console.log("onFocus", event);
+                    }
                 }
             });
         </script>
