@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+    <head>
+        <title>Vue Index 7</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <script>
+            Vue.component('custom-link', {
+                inheritAttrs: false,
+                template: `<a
+                             v-bind:href="'https://' + linkattrs.href"
+                             v-bind:target="linkattrs.target"
+                           >
+                             <slot name="linklabel">here will be the link label</slot>
+                           </a>`,
+                props: ['linkattrs']
+            });    
+        </script>
+        <div id="mainDiv">
+            <label>Type link label</label>
+            <input v-model="linkattrs.href">
+            <custom-link
+                v-bind:linkattrs="linkattrs"
+            >
+                <template v-slot:linklabel>
+                    <span v-bind:style="{color: 'red'}">
+                        {{ linkattrs.href }} 
+                    </span>
+                </template>
+            </custom-link>
+        </div>
+        <script>
+            var vm = new Vue({
+                el: "#mainDiv",
+                data: {
+                    linkattrs: {
+                        href: "",
+                        target: "_blank"
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
