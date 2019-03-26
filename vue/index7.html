@@ -12,9 +12,16 @@
                              v-bind:href="'https://' + linkattrs.href"
                              v-bind:target="linkattrs.target"
                            >
-                             <slot name="linklabel">here will be the link label</slot>
+                             <slot name="linklabel" v-bind:link="link"> {{ link.label }} </slot>
                            </a>`,
-                props: ['linkattrs']
+                props: ['linkattrs'],
+                data: function() {
+                    return {
+                        link: {
+                            label: 'Click me'
+                        }
+                    }
+                }
             });    
         </script>
         <div id="mainDiv">
@@ -23,10 +30,11 @@
             <custom-link
                 v-bind:linkattrs="linkattrs"
             >
-                <template v-slot:linklabel>
+                <template v-slot:linklabel="linkProps">
                     <span v-bind:style="{color: 'red'}">
-                        {{ linkattrs.href }} 
+                        {{ linkattrs.href }}
                     </span>
+                    {{ linkProps.link.label }}
                 </template>
             </custom-link>
         </div>
