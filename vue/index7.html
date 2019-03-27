@@ -22,7 +22,21 @@
                         }
                     }
                 }
-            });    
+            }); 
+
+            Vue.component('todo-list', {
+                template: `<ul>
+                             <li
+                               v-for="todo in todos"
+                               v-bind:key="todo.id" 
+                             >
+                             <slot name="todo" v-bind:todo="todo">
+                              {{ todo.text }}
+                             </slot>
+                             </li>
+                </ul>`,
+                props: ['todos']
+            });   
         </script>
         <div id="mainDiv">
             <label>Type link label</label>
@@ -30,13 +44,23 @@
             <custom-link
                 v-bind:linkattrs="linkattrs"
             >
-                <template v-slot:linklabel="linkProps">
+                <template v-slot:linklabel="{link}">
                     <span v-bind:style="{color: 'red'}">
                         {{ linkattrs.href }}
                     </span>
-                    {{ linkProps.link.label }}
+                    {{ link.label }}
                 </template>
             </custom-link>
+            </br>
+
+            <todo-list
+                v-bind:todos="todos"
+            >
+                <template v-slot:todo="{ todo }">
+                    <span v-if="todo.isComplete">✓</span>
+                    {{ todo.text }}
+                </template>
+            </todo-list>
         </div>
         <script>
             var vm = new Vue({
@@ -45,7 +69,12 @@
                     linkattrs: {
                         href: "",
                         target: "_blank"
-                    }
+                    },
+                    todos: [
+                        {id: 1, text: 'todo1', isComplete: true},
+                        {id: 2, text: 'todo2', isComplete: false},
+                        {id: 3, text: 'todo3', isComplete: false}
+                    ]
                 }
             });
         </script>
