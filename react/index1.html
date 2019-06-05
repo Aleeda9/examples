@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+    <head>
+        <title>Index React 1</title>
+        <meta charset="utf-8">
+            <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+            <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+            <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+            <link rel="stylesheet" href="./css/semantic.min.css"/>
+    </head>
+    <body style="background:#edeef0;">
+        <div id="root" style="width:100%;height:100%;">
+        </div>
+        <script type="text/babel">
+            function MainMenu(props) {
+                return <div>
+                    <div className="ui inverted secondary pointing menu" style={{ backgroundColor: '#0d621d' }} >
+                        <div className="item">ProgProg</div>
+                        <div className="right menu" />
+                        <a className="active item">Калькулятор</a>
+                        <a className="item">Контакты</a>
+                    </div>
+                </div>
+            };
+
+            function Content(props) {
+                return <div className="ui grid">
+                    <div className="sixteen wide column">
+                        <p>Как это будет по-русски?</p>
+                    </div>
+                </div>
+            }
+
+            function BlocksPanel(props) {
+                const {blocks, current} = props;
+                return <div>
+                    { blocks.map((blockName, i) => {
+                        return blockName == current ? 
+                            <div key={i}>
+                                { blockName }
+                                <Content />
+                            </div> : null
+                    }) }
+                </div>;
+            }
+
+            class Main extends React.Component {
+                constructor(props) {
+                    super(props);
+
+                    this.state = {
+                        blocks: ['rules', 'about', 'age', 'weight', 'feeding', 'allergy', 'fup', 'regime'],
+                        currentVisibleBlock: 'rules'  
+                    }
+                }
+                render () {
+                    return <div className="ui very padded segment" style={{ margin: '0.5em 3em'/*, minHeight: "500px"*/}}>
+                        <div className="ui grid">
+                            <div className="sixteen wide column">
+                                <BlocksPanel blocks={this.state.blocks}
+                                    current={this.state.currentVisibleBlock}
+                                />
+                            </div>
+                            <div className="sixteen wide column">
+                                {
+                                    this.state.blocks.indexOf(this.state.currentVisibleBlock) != 0 ?
+                                    <button name="back" className="ui left floated button"
+                                    onClick={() => {
+                                        const {blocks, currentVisibleBlock} = this.state;
+                                        this.setState({...this.state,
+                                            currentVisibleBlock: blocks[blocks.indexOf(currentVisibleBlock) - 1]
+                                        });
+                                    }}
+                                    >Назад</button> : null
+                                }{
+                                    this.state.blocks.indexOf(this.state.currentVisibleBlock) != this.state.blocks.length - 1 ?
+                                    <button name="forward" className="ui right floated button"
+                                        onClick={() => {
+                                            const {blocks, currentVisibleBlock} = this.state;
+                                            this.setState({...this.state,
+                                                currentVisibleBlock: blocks[blocks.indexOf(currentVisibleBlock) + 1]
+                                            });
+                                        }}
+                                    >Далее</button> : null
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            function MainView(props) {
+                return <div>
+                    <MainMenu />
+                    <Main />
+                </div>
+            };
+            
+            function App() {
+                return <MainView />
+            };
+            
+            ReactDOM.render(
+                <App />,
+                document.querySelector('#root')
+            )            
+        </script>
+    </body>
+</html>
